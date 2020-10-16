@@ -54,37 +54,37 @@ function getExifOrientationTransformation(img) {
       return null;
 
     case 2: // Mirror horizontal
-      return function(x, y) {
+      return function (x, y) {
         return [w - x - 1, y];
       };
 
     case 3: // Rotate 180
-      return function(x, y) {
+      return function (x, y) {
         return [w - x - 1, h - y - 1];
       };
 
     case 4: // Mirror vertical
-      return function(x, y) {
+      return function (x, y) {
         return [x, h - y - 1];
       };
 
     case 5: // Mirror horizontal and rotate 270 CW
-      return function(x, y) {
+      return function (x, y) {
         return [y, x];
       };
 
     case 6: // Rotate 90 CW
-      return function(x, y) {
+      return function (x, y) {
         return [y, h - x - 1];
       };
 
     case 7: // Mirror horizontal and rotate 90 CW
-      return function(x, y) {
+      return function (x, y) {
         return [w - y - 1, h - x - 1];
       };
 
     case 8: // Rotate 270 CW
-      return function(x, y) {
+      return function (x, y) {
         return [w - y - 1, x];
       };
 
@@ -162,7 +162,10 @@ export function parseBitmap(data, path, cb) {
     const mime = this.getMIME();
 
     if (this.constructor.decoders[mime]) {
-      this.bitmap = this.constructor.decoders[mime](data);
+      this.bitmap = this.constructor.decoders[mime](data, {
+        maxResolutionInMP: '9000',
+        maxMemoryUsageInMB: '2048',
+      });
     } else {
       return throwError.call(this, 'Unsupported MIME type: ' + mime, cb);
     }
